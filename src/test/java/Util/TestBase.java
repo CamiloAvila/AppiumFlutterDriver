@@ -6,8 +6,6 @@ import com.relevantcodes.extentreports.LogStatus;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -27,7 +25,7 @@ public class TestBase {
     private String udid = "";
     private String deviceName = "";
 
-    @BeforeClass
+
     public AndroidDriver<MobileElement> setup () throws MalformedURLException {
 
         File rootFile = new File("");
@@ -48,57 +46,9 @@ public class TestBase {
         return driver;
     }
 
-
-
-
-    @AfterClass
-    public void tearDown() throws MalformedURLException {
-        driver.quit();
-    }
-
-
-    @BeforeTest
-    public void startReport() {
-        //ExtentReports(String filePath,Boolean replaceExisting)
-        //filepath - path of the file, in .htm or .html format - path where your report needs to generate.
-        //replaceExisting - Setting to overwrite (TRUE) the existing file or append to it
-        //True (default): the file will be replaced with brand new markup, and all existing data will be lost. Use this option to create a brand new report
-        //False: existing data will remain, new tests will be appended to the existing report. If the the supplied path does not exist, a new file will be created.
-        extent = new ExtentReports("D:\\flutterappium\\test-output\\html\\extentReport.html", false);
-        //extent.addSystemInfo("Environment","Environment Name")
-        extent
-                .addSystemInfo("Host Name", "Host Name")
-                .addSystemInfo("Environment", "Automation Testing")
-                .addSystemInfo("User Name", "User123");
-        //loading the external xml file (i.e., extent-config.xml) which was placed under the base directory
-        //You could find the xml file below. Create xml file in your project and copy past the code mentioned below
-        extent.loadConfig(new File("D:\\flutterappium\\extent-config.xml"));
-    }
-
-    @AfterMethod
-    public void getResult(ITestResult result) {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            logger.log(LogStatus.FAIL, "Test Case Failed is " + result.getName());
-            logger.log(LogStatus.FAIL, "Test Case Failed is " + result.getThrowable());
-        } else if (result.getStatus() == ITestResult.SKIP) {
-            logger.log(LogStatus.SKIP, "Test Case Skipped is " + result.getName());
-        }
-    }
-
-    @AfterTest
-    public void endReport(){
-        // writing everything to document
-        //flush() - to write or update test information to your report.
-        extent.flush();
-        //Call close() at the very end of your session to clear all resources.
-        //If any of your test ended abruptly causing any side-affects (not all logs sent to ExtentReports, information missing), this method will ensure that the test is still appended to the report with a warning message.
-        //You should call close() only once, at the very end (in @AfterSuite for example) as it closes the underlying stream.
-        //Once this method is called, calling any Extent method will throw an error.
-        //close() - To close all the operation
-       // extent.close();
-    }
-
-    public static void switchContext(String context) {
+    public static void switchContext(String context) throws MalformedURLException {
+        TestBase tb = new TestBase();
+        tb.setup();
         driver.getContext();
         Set<String> con = driver.getContextHandles();
         for (String c : con) {

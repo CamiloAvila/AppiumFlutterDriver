@@ -1,21 +1,25 @@
 import Util.TestBase;
 import com.relevantcodes.extentreports.LogStatus;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.TimeoutException;
 import appium_flutter_driver.FlutterFinder;
 import appium_flutter_driver.finder.FlutterElement;
-import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
 
 
 public class AppiumTestDemo extends TestBase {
 
-   @Test
+    public static void main(String[] args) {
+        AppiumTestDemo demo = new AppiumTestDemo();
+        demo.test1();
+    }
+
     public void test1 (){
 
         try {
             switchContext("FLUTTER");
-            logger = extent.startTest("FLUTTER Switch Context");
-            logger.log(LogStatus.PASS, "FLUTTER Switch Context passed");
+
            // switchContext("NATIVE_APP");
             FlutterFinder find = new FlutterFinder(driver);
             Thread.sleep(3000);
@@ -28,13 +32,11 @@ public class AppiumTestDemo extends TestBase {
             txt_username.sendKeys("user@yopmailcom");
             txt_password.sendKeys("123456");
             button_login.click();
-            logger = extent.startTest("Flutter data input & Click test");
-            logger.log(LogStatus.PASS, "Flutter data input & Click test passed");
+
             Thread.sleep(5000);
 
-        } catch (TimeoutException | InterruptedException e) {
-            logger = extent.startTest("Flutter data input & Click test Failed ");
-            logger.log(LogStatus.FAIL, e);
+        } catch (TimeoutException | InterruptedException | MalformedURLException e) {
+
         }
 
     }
